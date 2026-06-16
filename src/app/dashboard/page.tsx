@@ -9,7 +9,7 @@ type Task = {
   title: string;
   description: string;
   priority: string;
-  completed: boolean;
+  status: string;
 };
 
 export default function Home(){
@@ -27,28 +27,51 @@ export default function Home(){
       }
     }
 
+    async function handleStatusChange(id: string, newStatus: string) {
+      try {
+        const response = await fetch("/api/tasks", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, status: newStatus }),
+        });
+        if (response.ok) {
+          fetchTasks(); // Refresh tasks
+        }
+      } catch (error) {
+        console.error("Update error:", error);
+      }
+    }
+
     useEffect(() => {
       fetchTasks();
     }, []);
 
+    const columns = ["To Do", "In Progress", "Done"];
 
     return (
       <>
         <Navbar />
-        <div className="flex flex-wrap items-start gap-4 m-3">
-          {tasks.length > 0 ? (
-            tasks.map((task)=>(
-              <TaskCard
-                key={task._id}
-                title={task.title}
-                description={task.description}
-                priority={task.priority}
-                completed={task.completed}
-              />
-            ))
-          ) : (
-            <p className="text-teal-200 text-xl m-5">No tasks found. Try creating one!</p>
-          )}
+        <div className="flex flex-row gap-6 p-6 overflow-x-auto min-h-screen bg-gray-900">
+          {columns.map((column) => (
+            <div key={column} className="flex flex-col gap-4 min-w-[280px] bg-gray-800 p-4 rounded-2xl border border-gray-700">
+              <h2 className="text-2xl font-bold text-teal-200 border-b border-gray-700 pb-2">{column}</h2>
+              <div className="flex flex-col gap-4">
+                {tasks
+                  .filter((task) => (task.status || "To Do") === column)
+                  .map((task) => (
+                    <TaskCard
+                      key={task._id}
+                      id={task._id}
+                      title={task.title}
+                      description={task.description}
+                      priority={task.priority}
+                      status={task.status || "To Do"}
+                      onStatusChange={handleStatusChange}
+                    />
+                  ))}
+              </div>
+            </div>
+          ))}
         </div>
       </>
     );

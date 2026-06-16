@@ -37,3 +37,22 @@ export async function POST(request: Request){
         );
     }
 }
+
+export async function PATCH(request: Request) {
+    try {
+        await connectDB();
+        const body = await request.json();
+        const { id, status } = body;
+
+        const updatedTask = await Task.findByIdAndUpdate(id, { status }, { new: true });
+
+        if (!updatedTask) {
+            return Response.json({ message: "Task not found" }, { status: 404 });
+        }
+
+        return Response.json(updatedTask);
+    } catch (error) {
+        console.log(error);
+        return Response.json({ message: "Failed to update task" }, { status: 500 });
+    }
+}
