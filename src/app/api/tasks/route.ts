@@ -56,3 +56,27 @@ export async function PATCH(request: Request) {
         return Response.json({ message: "Failed to update task" }, { status: 500 });
     }
 }
+
+export async function DELETE(request: Request) {
+    try {
+        await connectDB();
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get("id");
+        const status = searchParams.get("status");
+
+        if (id) {
+            await Task.findByIdAndDelete(id);
+            return Response.json({ message: "Task deleted" });
+        }
+
+        if (status) {
+            await Task.deleteMany({ status });
+            return Response.json({ message: `Tasks in ${status} cleared` });
+        }
+
+        return Response.json({ message: "Missing id or status" }, { status: 400 });
+    } catch (error) {
+        console.log(error);
+        return Response.json({ message: "Failed to delete" }, { status: 500 });
+    }
+}

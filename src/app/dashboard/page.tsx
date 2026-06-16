@@ -42,6 +42,25 @@ export default function Home(){
       }
     }
 
+    async function deleteTask(id: string) {
+      try {
+        const response = await fetch(`/api/tasks?id=${id}`, { method: "DELETE" });
+        if (response.ok) fetchTasks();
+      } catch (error) {
+        console.error("Delete error:", error);
+      }
+    }
+
+    async function clearColumn(status: string) {
+      if (!confirm(`Are you sure you want to clear all tasks in "${status}"?`)) return;
+      try {
+        const response = await fetch(`/api/tasks?status=${status}`, { method: "DELETE" });
+        if (response.ok) fetchTasks();
+      } catch (error) {
+        console.error("Clear error:", error);
+      }
+    }
+
     const handleDragOver = (e: React.DragEvent) => {
       e.preventDefault();
     };
@@ -69,8 +88,15 @@ export default function Home(){
               key={column}
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e, column)}
-              className="flex-1 flex flex-col gap-4 min-w-[250px] bg-gray-800 p-4 rounded-2xl border border-gray-700"
+              className="flex-1 flex flex-col gap-4 min-w-[250px] bg-gray-800 p-4 rounded-2xl border border-gray-700 relative group/col"
             >
+              <button
+                onClick={() => clearColumn(column)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-red-500 opacity-0 group-hover/col:opacity-100 transition-opacity font-bold text-xl z-20"
+                title={`Clear ${column}`}
+              >
+                ✕
+              </button>
               <h2 className="text-2xl font-bold text-teal-200 border-b border-gray-700 pb-2 text-center">{column}</h2>
               <div className="flex-1 flex flex-col gap-4 min-h-[100px]">
                 {tasks
@@ -83,6 +109,7 @@ export default function Home(){
                       description={task.description}
                       priority={task.priority}
                       status={task.status || "To Do"}
+                      onDelete={deleteTask}
                     />
                   ))}
               </div>
