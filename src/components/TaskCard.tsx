@@ -22,7 +22,7 @@ const TaskCard = ({ id, title, description, priority, status }: TaskCardProps) =
         <div
             draggable
             onDragStart={handleDragStart}
-            className={`flex h-auto w-full self-start flex-col rounded-2xl border-2 border-black overflow-hidden shrink-0 cursor-grab active:cursor-grabbing hover:scale-[1.02] transition-transform ${bgClass}`}
+            className={`flex h-auto w-full flex-col rounded-2xl border-2 border-black overflow-hidden shrink-0 cursor-grab active:cursor-grabbing hover:scale-[1.02] transition-transform ${bgClass}`}
         >
             <div className="bg-black p-3 text-xl font-bold text-teal-200">
                 <h2>{title}</h2>

@@ -63,16 +63,16 @@ export default function Home(){
     return (
       <>
         <Navbar />
-        <div className="flex flex-row gap-6 p-6 overflow-x-auto min-h-screen bg-gray-900">
+        <div className="flex justify-between items-stretch gap-6 p-6 min-h-screen bg-gray-900">
           {columns.map((column) => (
             <div
               key={column}
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e, column)}
-              className="flex flex-col gap-4 min-w-[280px] bg-gray-800 p-4 rounded-2xl border border-gray-700"
+              className="flex-1 flex flex-col gap-4 min-w-[250px] bg-gray-800 p-4 rounded-2xl border border-gray-700"
             >
-              <h2 className="text-2xl font-bold text-teal-200 border-b border-gray-700 pb-2">{column}</h2>
-              <div className="flex flex-col gap-4 min-h-[100px]">
+              <h2 className="text-2xl font-bold text-teal-200 border-b border-gray-700 pb-2 text-center">{column}</h2>
+              <div className="flex-1 flex flex-col gap-4 min-h-[100px]">
                 {tasks
                   .filter((task) => (task.status || "To Do") === column)
                   .map((task) => (
