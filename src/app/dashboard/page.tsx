@@ -42,6 +42,18 @@ export default function Home(){
       }
     }
 
+    const handleDragOver = (e: React.DragEvent) => {
+      e.preventDefault();
+    };
+
+    const handleDrop = (e: React.DragEvent, status: string) => {
+      e.preventDefault();
+      const taskId = e.dataTransfer.getData("taskId");
+      if (taskId) {
+        handleStatusChange(taskId, status);
+      }
+    };
+
     useEffect(() => {
       fetchTasks();
     }, []);
@@ -53,9 +65,14 @@ export default function Home(){
         <Navbar />
         <div className="flex flex-row gap-6 p-6 overflow-x-auto min-h-screen bg-gray-900">
           {columns.map((column) => (
-            <div key={column} className="flex flex-col gap-4 min-w-[280px] bg-gray-800 p-4 rounded-2xl border border-gray-700">
+            <div
+              key={column}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, column)}
+              className="flex flex-col gap-4 min-w-[280px] bg-gray-800 p-4 rounded-2xl border border-gray-700"
+            >
               <h2 className="text-2xl font-bold text-teal-200 border-b border-gray-700 pb-2">{column}</h2>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 min-h-[100px]">
                 {tasks
                   .filter((task) => (task.status || "To Do") === column)
                   .map((task) => (
@@ -66,7 +83,6 @@ export default function Home(){
                       description={task.description}
                       priority={task.priority}
                       status={task.status || "To Do"}
-                      onStatusChange={handleStatusChange}
                     />
                   ))}
               </div>
