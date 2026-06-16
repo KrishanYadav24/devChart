@@ -22,6 +22,12 @@ const TaskSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    movedToInProgressAt: {
+        type: Date,
+    },
+    completedAt: {
+        type: Date,
+    },
 });
 
 const Task = mongoose.models.Task || mongoose.model("Task", TaskSchema);

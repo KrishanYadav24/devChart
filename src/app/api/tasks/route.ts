@@ -44,7 +44,15 @@ export async function PATCH(request: Request) {
         const body = await request.json();
         const { id, status } = body;
 
-        const updatedTask = await Task.findByIdAndUpdate(id, { status }, { new: true });
+        const updateData: any = { status };
+
+        if (status === "In Progress") {
+            updateData.movedToInProgressAt = new Date();
+        } else if (status === "Done") {
+            updateData.completedAt = new Date();
+        }
+
+        const updatedTask = await Task.findByIdAndUpdate(id, updateData, { returnDocument: 'after' });
 
         if (!updatedTask) {
             return Response.json({ message: "Task not found" }, { status: 404 });

@@ -10,6 +10,9 @@ type Task = {
   description: string;
   priority: string;
   status: string;
+  createdAt: string;
+  movedToInProgressAt?: string;
+  completedAt?: string;
 };
 
 export default function Home(){
@@ -109,6 +112,9 @@ export default function Home(){
                       description={task.description}
                       priority={task.priority}
                       status={task.status || "To Do"}
+                      createdAt={task.createdAt}
+                      movedToInProgressAt={task.movedToInProgressAt}
+                      completedAt={task.completedAt}
                       onDelete={deleteTask}
                     />
                   ))}
