@@ -2,10 +2,10 @@ type TaskCardProps = {
     title: string;
     description: string;
     priority: string;
-    completion: boolean;
+    completed: boolean;
 };
 
-const TaskCard = ({ title, description, priority, completion }: TaskCardProps) => {
+const TaskCard = ({ title, description, priority, completed }: TaskCardProps) => {
     const bgClass =
         priority.toLowerCase() === "high"
             ? "bg-red-400"

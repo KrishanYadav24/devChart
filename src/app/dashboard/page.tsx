@@ -9,7 +9,7 @@ type Task = {
   title: string;
   description: string;
   priority: string;
-  completion: boolean;
+  completed: boolean;
 };
 
 export default function Home(){
@@ -17,10 +17,14 @@ export default function Home(){
     const [tasks,setTasks] = useState<Task[]>([]);
 
     async function fetchTasks() {
-
-      const response = await fetch("/api/tasks");
-      const data = await response.json();
-      setTasks(data);
+      try {
+        const response = await fetch("/api/tasks");
+        if (!response.ok) throw new Error("Failed to fetch");
+        const data = await response.json();
+        setTasks(data);
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
     }
 
     useEffect(() => {
@@ -32,15 +36,19 @@ export default function Home(){
       <>
         <Navbar />
         <div className="flex flex-wrap items-start gap-4 m-3">
-          {tasks.map((task)=>(
-            <TaskCard 
-              key={task._id}
-              title={task.title}
-              description={task.description}
-              priority={task.priority}
-              completion={task.completion}
-            />
-          ))}
+          {tasks.length > 0 ? (
+            tasks.map((task)=>(
+              <TaskCard
+                key={task._id}
+                title={task.title}
+                description={task.description}
+                priority={task.priority}
+                completed={task.completed}
+              />
+            ))
+          ) : (
+            <p className="text-teal-200 text-xl m-5">No tasks found. Try creating one!</p>
+          )}
         </div>
       </>
     );
