@@ -1,18 +1,19 @@
 import connectDB from "@/lib/mongodb";
 import Task from "@/models/Tasks";
+import { getAuthUser } from "@/lib/auth";
 
 export async function GET(){
     try{
         await connectDB();
+        const user = await getAuthUser();
+        if (!user) return Response.json({ message: "Unauthorized" }, { status: 401 });
 
-        const tasks = await Task.find();
+        const tasks = await Task.find({ userId: user.userId });
 
         return Response.json(tasks);
 
     }catch(error){
-
         console.log(error);
-
         return Response.json(
             {message:"Failed to fetch tasks"},
             {status: 500}
@@ -23,10 +24,11 @@ export async function GET(){
 export async function POST(request: Request){
     try{
         await connectDB();
+        const user = await getAuthUser();
+        if (!user) return Response.json({ message: "Unauthorized" }, { status: 401 });
 
         const body = await request.json();
-
-        const task = await Task.create(body);
+        const task = await Task.create({ ...body, userId: user.userId });
 
         return Response.json(task,{status: 201});
     }catch(error){
@@ -41,6 +43,9 @@ export async function POST(request: Request){
 export async function PATCH(request: Request) {
     try {
         await connectDB();
+        const user = await getAuthUser();
+        if (!user) return Response.json({ message: "Unauthorized" }, { status: 401 });
+
         const body = await request.json();
         const { id, status } = body;
 
@@ -52,7 +57,11 @@ export async function PATCH(request: Request) {
             updateData.completedAt = new Date();
         }
 
-        const updatedTask = await Task.findByIdAndUpdate(id, updateData, { returnDocument: 'after' });
+        const updatedTask = await Task.findOneAndUpdate(
+            { _id: id, userId: user.userId },
+            updateData,
+            { returnDocument: 'after' }
+        );
 
         if (!updatedTask) {
             return Response.json({ message: "Task not found" }, { status: 404 });
@@ -68,17 +77,20 @@ export async function PATCH(request: Request) {
 export async function DELETE(request: Request) {
     try {
         await connectDB();
+        const user = await getAuthUser();
+        if (!user) return Response.json({ message: "Unauthorized" }, { status: 401 });
+
         const { searchParams } = new URL(request.url);
         const id = searchParams.get("id");
         const status = searchParams.get("status");
 
         if (id) {
-            await Task.findByIdAndDelete(id);
+            await Task.findOneAndDelete({ _id: id, userId: user.userId });
             return Response.json({ message: "Task deleted" });
         }
 
         if (status) {
-            await Task.deleteMany({ status });
+            await Task.deleteMany({ status, userId: user.userId });
             return Response.json({ message: `Tasks in ${status} cleared` });
         }
 
