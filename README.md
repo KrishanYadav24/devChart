@@ -10,16 +10,14 @@ devChart provides a streamlined workflow to manage your tasks from conception to
 
 ## ✨ Features Implemented
 
--   **🔒 Secure Authentication:** Register and login with a minimum 6-character username and password. Powered by JWT and Bcrypt.
--   **📋 Kanban Board:** A three-stage pipeline (To Do, In Progress, Done) for visual task management.
--   **🖱️ Drag & Drop:** Move tasks between stages seamlessly using native browser drag-and-drop.
--   **⏱️ Advanced Time Tracking:**
-    *   **To Do:** Displays the exact creation timestamp.
-    *   **In Progress:** Features a live counter showing how long you've been working on a task.
-    *   **Done:** Shows the total duration from creation to completion.
--   **⚙️ Task Management:** Create new tasks with priority levels (High, Medium, Low) and delete individual tasks or clear entire columns.
--   **👤 User Profiles:** Personalized dashboard with a "Settings" page to update your security credentials.
--   **📱 Responsive & Modern UI:** A dark-themed, high-contrast interface built with Tailwind CSS 4.
+-   **⚡ Optimistic UI Updates:** Task movements and deletions reflect instantly in the interface, ensuring a high-performance, "snappy" user experience by syncing with the database in the background.
+-   **🖱️ Native Drag-and-Drop:** A fully interactive Kanban experience where users can visually transition tasks between stages with ease.
+-   **🕒 Dynamic Lifecycle Tracking:** 
+    *   **To Do:** Automatically logs the exact moment of task creation.
+    *   **In Progress:** Features a live, per-second timer that tracks active development time the moment a task is moved.
+    *   **Done:** Calculates and displays the total "Time to Complete" once a task reaches the final stage.
+-   **🔒 Secure Multi-User Access:** Complete authentication system with JWT and Bcrypt, ensuring data isolation so every user has their own private workspace.
+-   **⚙️ Smart Task Management:** Column-level clearing actions and priority-based color coding for instant visual hierarchy.
 
 ## 🛠️ Technology Stack Used
 
