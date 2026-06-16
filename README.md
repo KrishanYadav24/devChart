@@ -90,5 +90,3 @@ The project is optimized for deployment on **Vercel**:
 -   **File Storage:** Tasks do not currently support image or file attachments.
 
 ---
-
-*Happy Building!* 🛠️
