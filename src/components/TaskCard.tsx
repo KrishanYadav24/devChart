@@ -86,7 +86,7 @@ const TaskCard = ({ id, title, description, priority, status, createdAt, movedTo
             </div>
 
             <div className="p-3 flex flex-col gap-2">
-                <div className="rounded-xl border border-black bg-teal-200 p-3 text-sm wrap-break-words">
+                <div className="rounded-xl border text-black border-black bg-teal-200 p-3 text-sm wrap-break-words">
                     {description}
                 </div>
 
