@@ -73,16 +73,14 @@ The project is optimized for deployment on **Vercel**:
 
 ## 📸 Screenshots
 
-> *Note: Add your actual screenshots in a `/public/screenshots` folder.*
-
 ### 1. Landing & Login
-![Landing Page](./public/screenshots/landing.png)
+<img src="public/screenshots/landing.png" width="800" alt="Landing Page">
 
 ### 2. Kanban Dashboard
-![Dashboard](./public/screenshots/dashboard.png)
+<img src="public/screenshots/dashboard.png" width="800" alt="Dashboard">
 
 ### 3. Task Creation
-![Create Task](./public/screenshots/create.png)
+<img src="public/screenshots/create.png" width="800" alt="Create Task">
 
 ---
 
